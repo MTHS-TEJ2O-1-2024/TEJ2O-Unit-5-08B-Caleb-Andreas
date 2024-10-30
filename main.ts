@@ -35,7 +35,7 @@ while (true) {
     // distanceToObject <= 10.
     if (distanceToObject <= 10) {
         robotbit.StpCarMove(-10, 65)
-        robotbit.StepperTurn(robotbit.Steppers.M1, robotbit.Turns.T1B2)
+        robotbit.StepperDual(180, -180)
         distanceToObject = sonar.ping(
             DigitalPin.P1,
             DigitalPin.P2,
