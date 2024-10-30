@@ -7,28 +7,39 @@
 */
 
 // Variables.
-let distanceToObject: number = 0
+let distanceToObject: number
 
 // Cleanup.
 basic.clearScreen()
 basic.showIcon(IconNames.Happy)
 
+// Starting distance check.
+distanceToObject = sonar.ping(
+    DigitalPin.P1,
+    DigitalPin.P2,
+    PingUnit.Centimeters
+)
+
 // Motor loop.
 while (true) {
-    distanceToObject = sonar.ping(
-        DigitalPin.P1,
-        DigitalPin.P2,
-        PingUnit.Centimeters
-    )
-
     // Move forwards 10 cm if distanceToObject > 10
     if (distanceToObject > 10) {
         robotbit.StpCarMove(10, 65)
+        distanceToObject = sonar.ping(
+            DigitalPin.P1,
+            DigitalPin.P2,
+            PingUnit.Centimeters
+        )
     }
-    // Move backwards 10 cm and turn 90 degrees if distanceToObject < 10.
-    if (distanceToObject < 10) {
-        robotbit.MotorStopAll()
+    // Move backwards 10 cm and turn 90 degrees if 
+    // distanceToObject <= 10.
+    if (distanceToObject <= 10) {
         robotbit.StpCarMove(-10, 65)
-        robotbit.StepperDual(180, -180)
+        robotbit.StepperTurn(robotbit.Steppers.M1, robotbit.Turns.T1B2)
+        distanceToObject = sonar.ping(
+            DigitalPin.P1,
+            DigitalPin.P2,
+            PingUnit.Centimeters
+        )
     }
 }
